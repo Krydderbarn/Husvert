@@ -1,0 +1,13 @@
+#ifndef WIFI_CONFIG_H
+#define WIFI_CONFIG_H
+
+// Copy this file to wifi_config.h and add your credentials
+#define WIFI_SSID      "your_wifi_ssid_here"
+#define WIFI_PASSWORD  "your_wifi_password_here"
+
+// WiFi configuration
+#define WIFI_MAXIMUM_RETRY  5
+#define WIFI_CONNECTED_BIT  BIT0
+#define WIFI_FAIL_BIT       BIT1
+
+#endif // WIFI_CONFIG_H
