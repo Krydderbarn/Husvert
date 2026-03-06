@@ -7,6 +7,7 @@ idf_component_register(
     SRCS 
         "main.c"           # Main application entry point
         "wifi_app.c"       # WiFi connectivity module
+        "mqtt_app.c"       # MQTT client module (to be created)
     
     INCLUDE_DIRS 
         "."                # Current directory (for header files)
@@ -16,4 +17,5 @@ idf_component_register(
         esp_wifi           # WiFi driver component
         nvs_flash          # Non-volatile storage (required by WiFi)
         esp_driver_gpio    # GPIO driver (for LED and hardware control)
+        mqtt               # MQTT client (built-in ESP-IDF component)
 )
