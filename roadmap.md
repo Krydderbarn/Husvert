@@ -25,7 +25,7 @@ Build a production-grade home monitoring and control system with:
 - [x] ESP-IDF or Arduino framework installed and working
 - [x] "Hello World" LED blink program
 - [x] Serial debugging working
-- [ ] First temperature sensor (DHT22 or BME280) reading data
+- [x] First temperature sensor (SHTC3) reading data
 
 **Skills learned:**
 - ESP32 toolchain setup
@@ -65,7 +65,7 @@ mosquitto_pub -h localhost -t "test/topic" -m "hello" -u user -P pass
 #### Milestone 1.3: First ESP32-MQTT Integration
 **Deliverables:**
 - [x] ESP32 connects to WiFi
-- [ ] ESP32 publishes sensor data to MQTT every 30 seconds
+- [x] ESP32 publishes sensor data to MQTT every 30 seconds
 - [ ] Raspberry Pi receives and displays data
 - [ ] Retained messages working for "last known state"
 

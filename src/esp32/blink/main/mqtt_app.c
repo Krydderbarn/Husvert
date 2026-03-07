@@ -178,56 +178,62 @@ static void mqtt_publishing_task(void *pvParameters)
 {
     uint32_t status_counter = 0;
     uint32_t rssi_counter = 0;
-    
+
     ESP_LOGI(TAG, "Publishing task started");
-    
+
     while (1) {
         // Wait 1 second
         vTaskDelay(pdMS_TO_TICKS(1000));
-        
+
         // Only publish if connected
         if (!is_connected) {
             continue;
         }
-        
+
         status_counter += 1000;
         rssi_counter += 1000;
-        
+
         // Publish status every 10 seconds
         if (status_counter >= MQTT_STATUS_INTERVAL) {
             status_counter = 0;
+
+            const char *status_msg = "online";
+            ESP_LOGI(TAG, "Publishing %s: \"%s\"", MQTT_TOPIC_STATUS, status_msg);
             
-            ESP_LOGI(TAG, "Publishing status...");
-            int msg_id = esp_mqtt_client_publish(mqtt_client, 
-                                                 MQTT_TOPIC_STATUS, 
-                                                 "online", 
+            int msg_id = esp_mqtt_client_publish(mqtt_client,
+                                                 MQTT_TOPIC_STATUS,
+                                                 status_msg,
                                                  0, 1, 0);
             if (msg_id < 0) {
                 ESP_LOGE(TAG, "Failed to publish status");
+            } else {
+                ESP_LOGD(TAG, "Status published, msg_id=%d", msg_id);
             }
         }
-        
+
         // Publish RSSI every 30 seconds
         if (rssi_counter >= MQTT_RSSI_INTERVAL) {
             rssi_counter = 0;
-            
-            // Get WiFi RSSI (signal strength)
+
             wifi_ap_record_t ap_info;
             esp_err_t ret = esp_wifi_sta_get_ap_info(&ap_info);
             if (ret == ESP_OK) {
                 char rssi_str[16];
                 snprintf(rssi_str, sizeof(rssi_str), "%d", ap_info.rssi);
+
+                ESP_LOGI(TAG, "Publishing %s: %s dBm", MQTT_TOPIC_RSSI, rssi_str);
                 
-                ESP_LOGI(TAG, "Publishing RSSI: %s dBm", rssi_str);
-                int msg_id = esp_mqtt_client_publish(mqtt_client, 
-                                                     MQTT_TOPIC_RSSI, 
-                                                     rssi_str, 
+                int msg_id = esp_mqtt_client_publish(mqtt_client,
+                                                     MQTT_TOPIC_RSSI,
+                                                     rssi_str,
                                                      0, 1, 0);
                 if (msg_id < 0) {
                     ESP_LOGE(TAG, "Failed to publish RSSI");
+                } else {
+                    ESP_LOGD(TAG, "RSSI published, msg_id=%d", msg_id);
                 }
             } else {
-                ESP_LOGW(TAG, "Failed to get WiFi RSSI");
+                ESP_LOGW(TAG, "Failed to get WiFi RSSI: %s", esp_err_to_name(ret));
             }
         }
     }
