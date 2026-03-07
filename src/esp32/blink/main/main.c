@@ -1,11 +1,18 @@
 /*
  * Husvert - Distributed Home Monitoring and Control System
  * Phase 1.4: Sensor Integration (Event-Driven Architecture)
+ * Phase 1.4: Sensor Integration (Event-Driven Architecture)
  * 
  * Features:
  * - WiFi connectivity
  * - MQTT publish/subscribe
  * - Remote LED control via MQTT
+ * - Temperature & humidity monitoring
+ * 
+ * Architecture:
+ * - main.c is the application hub (orchestration layer)
+ * - Modules fire callbacks/events, main.c routes them
+ * - Loose coupling: modules don't know about each other
  * - Temperature & humidity monitoring
  * 
  * Architecture:
@@ -25,6 +32,8 @@
 // Our modules
 #include "wifi_app.h"
 #include "mqtt_app.h"
+#include "mqtt_config.h"  // For topic names
+#include "sensor_app.h"
 #include "mqtt_config.h"  // For topic names
 #include "sensor_app.h"
 
@@ -169,6 +178,8 @@ void handle_sensor_data(float temperature, float humidity)
 void app_main(void)
 {
     ESP_LOGI(TAG, "========================================");
+    ESP_LOGI(TAG, "Husvert Phase 1.4 - Sensor Integration");
+    ESP_LOGI(TAG, "Event-Driven Architecture");
     ESP_LOGI(TAG, "Husvert Phase 1.4 - Sensor Integration");
     ESP_LOGI(TAG, "Event-Driven Architecture");
     ESP_LOGI(TAG, "========================================");
